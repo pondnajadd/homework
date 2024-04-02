@@ -1,0 +1,13 @@
+{{questions.title}}<br>
+{{questions.questionInfo[0].title}}
+<mat-nav-list>
+  @for (q of questions.questionInfo[0].questionAnswerInfo; track q) {
+  <mat-list-item>
+    <a matListItemTitle routerLinkActive="router-link-active">{{
+      q.answer }}</a>
+    <button mat-icon-button matListItemMeta>
+      <mat-icon>info</mat-icon>
+    </button>
+  </mat-list-item>
+  }
+</mat-nav-list>
