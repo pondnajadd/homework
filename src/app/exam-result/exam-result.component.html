@@ -1,0 +1,11 @@
+<ng-container>
+  <div id="chart">
+    <apx-chart [series]="chartOptions!.series!" [chart]="chartOptions!.chart!" [labels]="chartOptions!.labels"
+      [responsive]="chartOptions!.responsive!"></apx-chart>
+  </div>
+  <div style="text-align: center;">
+    คุณทำคะแนนได้ : {{data.score}}
+    จากคะแนนเต็ม : {{data.fullscore}}
+  </div>
+  <button mat-flat-button color="primary" (click)="NavigateCategories()">ทำแบบทดสอบอื่น</button>
+</ng-container>

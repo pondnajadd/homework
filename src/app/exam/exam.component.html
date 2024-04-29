@@ -1,13 +1,23 @@
-{{questions.title}}<br>
-{{questions.questionInfo[0].title}}
-<mat-nav-list>
-  @for (q of questions.questionInfo[0].questionAnswerInfo; track q) {
-  <mat-list-item>
-    <a matListItemTitle routerLinkActive="router-link-active">{{
-      q.answer }}</a>
-    <button mat-icon-button matListItemMeta>
-      <mat-icon>info</mat-icon>
-    </button>
-  </mat-list-item>
-  }
-</mat-nav-list>
+<ng-container *ngFor="let i of formList;let index = index">
+  <form [formGroup]="formList[index]" (ngSubmit)="submitAnswer()" *ngIf="no==index">
+    <div style="font-size: large;text-align: center;">{{questions.questionInfo[no].title}}</div>
+    ข้อที่ {{index +1}}
+    <ng-container *ngFor="let answer of answers;let index = index">
+      <mat-card><mat-icon></mat-icon>
+        <mat-card-content>
+          <mat-checkbox (change)="selectAnswer($event,answer.questionAnswerId,answer.questionAnswerId)"
+            id="{{answer.questionAnswerId}}" [checked]="isChecked(answer.questionAnswerId)">
+            {{answer.answer }}</mat-checkbox>
+
+
+
+        </mat-card-content></mat-card>
+
+    </ng-container>
+
+    <button mat-button (click)="prevQuestion()" [disabled]="no == 0">Prev</button>
+    <button mat-button (click)="nextQuestion()" [disabled]="no >= questions.totalQuestion-1"> Next</button>
+    <button mat-flat-button color="primary" type="submit" *ngIf="no == formList.length-1">ส่งคำตอบ</button>
+
+  </form>
+</ng-container>

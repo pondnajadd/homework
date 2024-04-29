@@ -6,6 +6,7 @@ import { StorageService } from './storage.service';
 import { ResponseModel } from '../models/response';
 import { QuestionsModels } from '../models/questions';
 import { environment } from '../../environments/environment';
+import { AssignmentsModel, ResultAssignment } from '../models/assignments';
 const API: string = environment.apiUrl;
 @Injectable({
   providedIn: 'root',
@@ -27,6 +28,15 @@ export class ExamService {
   questions(id: string): Observable<ResponseModel<QuestionsModels>> {
     return this.http.get<ResponseModel<QuestionsModels>>(
       API + 'questions/categories/' + id,
+      this.httpOptions
+    );
+  }
+  submitAssignment(
+    answer: AssignmentsModel
+  ): Observable<ResponseModel<ResultAssignment>> {
+    return this.http.post<ResponseModel<ResultAssignment>>(
+      API + 'questions/submit-assignment',
+      answer,
       this.httpOptions
     );
   }

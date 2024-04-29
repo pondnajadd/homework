@@ -7,15 +7,28 @@ import { DialogModule } from '@angular/cdk/dialog';
 import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { QuestionInfo } from '../models/questions';
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [MatListModule, MatIcon, ErrorDialogComponent, RouterModule],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.css',
+  imports: [
+    MatListModule,
+    MatIcon,
+    ErrorDialogComponent,
+    RouterModule,
+    NavbarComponent,
+  ],
 })
 export class CategoriesComponent {
-  constructor(private examService: ExamService, private dialog: MatDialog) {}
+  constructor(
+    private examService: ExamService,
+    private dialog: MatDialog,
+    private _formBuilder: FormBuilder
+  ) {}
   links!: CategoriesModel[];
   showInfo(_t3: any) {
     throw new Error('Method not implemented.');
@@ -23,6 +36,7 @@ export class CategoriesComponent {
   ngOnInit() {
     this.GetCategories();
   }
+
   private GetCategories() {
     this.examService.categories().subscribe({
       next: (data) => {

@@ -7,13 +7,15 @@
       <mat-form-field>
         <mat-label>Enter your email</mat-label>
         <input matInput placeholder="pat@example.com" formControlName="username" required>
-
+        @if (loginForm.hasError('required')) {
+        <mat-error>Email is <strong>required</strong></mat-error>
+        }
       </mat-form-field>
 
 
       <mat-form-field>
         <mat-label>Enter your password</mat-label>
-        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" required>
         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
           [attr.aria-pressed]="hide">
           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -22,7 +24,7 @@
       </mat-form-field>
 
 
-      <button class="btn btn-primary btn-block align-right" mat-button>Login</button>
+      <button class="btn btn-primary btn-block align-right" mat-button [disabled]="!loginForm.valid">Login</button>
 
     </form>
   </mat-card-content>

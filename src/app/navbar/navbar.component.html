@@ -1,0 +1,12 @@
+<mat-toolbar>
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>ข้อสอบ</span>
+  <span>{{name}}</span>
+
+  <span class="flexExpand"></span>
+  <countdown #cd [config]="{ leftTime: 30 }" />
+
+  <button mat-button (click)="logout()">Logout</button>
+</mat-toolbar>

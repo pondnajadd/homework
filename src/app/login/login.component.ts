@@ -70,7 +70,7 @@ export class LoginComponent {
 
         error: (data) => {
           this.dialog.open(ErrorDialogComponent, {
-            data: { message: data.message },
+            data: { message: 'User or Password is not correct' },
           });
         },
       });

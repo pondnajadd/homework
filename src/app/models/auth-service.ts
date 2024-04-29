@@ -1,12 +1,12 @@
 export class AuthServiceModel {
   accountId: string;
   fullName: string;
-  expiredDate: string;
+  expiredDate: Date;
   accessToken: string;
   constructor() {
     this.accountId = '';
     this.fullName = '';
-    this.expiredDate = '';
+    this.expiredDate = new Date();
     this.accessToken = '';
   }
 }
