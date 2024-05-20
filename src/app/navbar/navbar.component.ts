@@ -5,6 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { StorageService } from '../service/storage.service';
 import { CountdownModule } from 'ngx-countdown';
 import { Router, RouterModule, RouterStateSnapshot } from '@angular/router';
+import { TimerComponent } from '../timer/timer.component';
 
 @Component({
   selector: 'app-navbar',
@@ -15,6 +16,7 @@ import { Router, RouterModule, RouterStateSnapshot } from '@angular/router';
     MatIconModule,
     CountdownModule,
     RouterModule,
+    TimerComponent,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
