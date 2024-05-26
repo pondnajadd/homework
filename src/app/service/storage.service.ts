@@ -29,7 +29,7 @@ export class StorageService {
   }
   public sessionExpired(): boolean {
     const c = this.getUser();
-    return c.expiredDate >= new Date();
+    return new Date(c.expiredDate ?? '') <= new Date();
   }
 
   public isLoggedIn(): boolean {
@@ -41,7 +41,7 @@ export class StorageService {
   }
   public saveAnswers(questionId: string, AnswerId: string) {
     sessionStorage.removeItem(StorageService.ANS_KEY);
-   
+
     sessionStorage.setItem(StorageService.ANS_KEY, JSON.stringify(AnswerId));
   }
   public getExam(): QuestionsModels {

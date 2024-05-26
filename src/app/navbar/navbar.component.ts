@@ -5,7 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { StorageService } from '../service/storage.service';
 import { CountdownModule } from 'ngx-countdown';
 import { Router, RouterModule, RouterStateSnapshot } from '@angular/router';
-import { TimerComponent } from '../timer/timer.component';
+import { TimerService } from '../service/timer.service';
 
 @Component({
   selector: 'app-navbar',
@@ -16,18 +16,24 @@ import { TimerComponent } from '../timer/timer.component';
     MatIconModule,
     CountdownModule,
     RouterModule,
-    TimerComponent,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
+  constructor(
+    private storage: StorageService,
+    private router: Router,
+    private timerService: TimerService
+  ) {}
   name: string = '';
-  time: string = '';
+  time: string = this.timerService.display;
 
-  constructor(private storage: StorageService, private router: Router) {}
   ngOnInit() {
-    this.name = this.storage.getUser().fullName;
+    this.name = this.storage.getUser().fullName
+      ? this.storage.getUser().fullName
+      : '';
+    // this.time = this.timerService.startTimer();
   }
   logout() {
     this.storage.clean();

@@ -32,6 +32,7 @@ import {
   Question,
 } from '../models/answers-submit';
 import { ExamResultComponent } from '../exam-result/exam-result.component';
+import { TimerService } from '../service/timer.service';
 
 @Component({
   selector: 'app-exam',
@@ -51,14 +52,20 @@ import { ExamResultComponent } from '../exam-result/exam-result.component';
 })
 export class ExamComponent {
   isChecked(ansId: string): boolean {
-    return this.formList[this.no].value.answer == ansId;
+    if (Array.isArray(this.formList[this.no].value.answer)) {
+      return this.formList[this.no].value.answer.some(
+        (x: string) => x == ansId
+      );
+    }
+    return false;
   }
   constructor(
     private examService: ExamService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private storage: StorageService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private timerService: TimerService
   ) {}
   selectAnswer($event: any, answerId: string, questionId: string) {
     if (this.formList[this.no]) {
@@ -69,9 +76,7 @@ export class ExamComponent {
       } else currentSelected.push(answerId);
       this.formList[this.no].get('answer')?.setValue(currentSelected);
       this.formList[this.no].get('answer')?.setErrors(null);
-
       this.storage.saveAnswers(this.catId, answerId);
-
       console.log(this.formList);
     }
   }
@@ -125,6 +130,8 @@ export class ExamComponent {
   questions!: QuestionsModels;
   no: number = 0;
   formList: Array<FormGroup> = [];
+  display: any;
+  public timerInterval: any;
   prevQuestion() {
     this.no = this.no - 1;
     this.answers = this.questions.questionInfo[this.no].questionAnswerInfo;
@@ -152,6 +159,8 @@ export class ExamComponent {
         if (res.isSuccess) {
           this.storage.saveExam(res.data);
           this.questions = res.data;
+
+          this.display = this.timer(this.questions.timeLimitOfMinuteUnit);
           res.data.questionInfo.forEach((x) => {
             this.formList.push(this.buildForm(x));
           });
@@ -172,5 +181,35 @@ export class ExamComponent {
       questionId: [item.questionId, Validators.required],
       answer: ['', Validators.required],
     });
+  }
+
+  stop() {
+    clearInterval(this.timerInterval);
+  }
+
+  timer(minute: number) {
+    // let minute = 1;
+    let seconds: number = minute * 60;
+    let textSec: any = '0';
+    let statSec: number = 60;
+
+    const prefix = minute < 10 ? '0' : '';
+
+    this.timerInterval = setInterval(() => {
+      seconds--;
+      if (statSec != 0) statSec--;
+      else statSec = 59;
+
+      if (statSec < 10) {
+        textSec = '0' + statSec;
+      } else textSec = statSec;
+
+      this.display = `${prefix}${Math.floor(seconds / 60)}:${textSec}`;
+
+      if (seconds == 0) {
+        this.submitAnswer();
+        clearInterval(this.timerInterval);
+      }
+    }, 1000);
   }
 }
